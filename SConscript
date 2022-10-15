@@ -4,9 +4,9 @@ import rtconfig
 cwd     = GetCurrentDir()
 
 src    = Glob('drv/*.h')
-src    = Glob('drv/*.c')
-src    = Glob('src/*.h')
-src    = Glob('src/*.c')
+src    += Glob('drv/*.c')
+src    += Glob('src/*.h')
+src    += Glob('src/*.c')
 
 path    = [cwd + "/"]
 path   += [cwd + '/src']
