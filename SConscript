@@ -1,19 +1,16 @@
+# RT-Thread building script for bridge
+
+import os
 from building import *
-import rtconfig
 
-cwd     = GetCurrentDir()
+cwd = GetCurrentDir()
+objs = []
+list = os.listdir(cwd)
 
-src    = Glob('drv/*.h')
-src    += Glob('drv/*.c')
-src    += Glob('src/*.h')
-src    += Glob('src/*.c')
+if GetDepend('PKG_USING_LRF_NV7LIDAR'):
+    for d in list:
+        path = os.path.join(cwd, d)
+        if os.path.isfile(os.path.join(path, 'SConscript')):
+            objs = objs + SConscript(os.path.join(d, 'SConscript'))
 
-path    = [cwd + "/"]
-path   += [cwd + '/src']
-path   += [cwd + '/drv']
-
-LOCAL_CCFLAGS = ''
-
-group = DefineGroup('nv7lidar', src, depend = ['PKG_USING_LRF_NV7LIDAR'], CPPPATH = path, LOCAL_CCFLAGS = LOCAL_CCFLAGS)
-
-Return('group')
+Return('objs')
