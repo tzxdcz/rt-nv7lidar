@@ -16,6 +16,12 @@
 #include <nv7lidar.h>
 #include <nv7lidar_protocol.h>
 
+/**
+ * @brief 创建雷达设备
+ * 
+ * @param lidar_name 
+ * @return rt_device_t 
+ */
 rt_device_t nv7_lidar_create(const char* lidar_name)
 {
     RT_ASSERT(lidar_name != RT_NULL);
@@ -28,7 +34,12 @@ rt_device_t nv7_lidar_create(const char* lidar_name)
     }
     return lidar;
 }
-
+/**
+ * @brief 雷达初始化
+ * 
+ * @param lidar 
+ * @return rt_err_t 
+ */
 rt_err_t nv7_lidar_init(rt_device_t lidar)
 {
     RT_ASSERT(lidar != RT_NULL);
@@ -42,32 +53,14 @@ rt_err_t nv7_lidar_init(rt_device_t lidar)
 
     return rt_device_open(lidar, RT_NULL);
 }
-
-//rt_err_t nv7_lidar_recev_data(rt_device_t lidar, rt_uint8_t* buffer, rt_size_t len, rt_uint32_t timeout)
-//{
-//    RT_ASSERT(lidar != RT_NULL);
-//
-//    int  recvPos = 0;
-//    rt_uint32_t startTs = rt_tick_get();
-//    rt_uint32_t waitTime;
-//
-//    LOG_I("%d bytes to receive", len);
-//    while ((waitTime = rt_tick_get() - startTs) <= rt_tick_from_millisecond(timeout))
-//    {
-//        rt_uint8_t ch;
-//        rt_device_read(lidar, 0, &ch, 1);
-//        buffer[recvPos] = ch;
-//        // LOG_I("Received %02X", buffer[recvPos]);
-//        recvPos++;
-//        if (recvPos == len)
-//        {
-//            LOG_D("Received content");
-//            return RT_EOK;
-//        }
-//    }
-//    return RT_ETIMEOUT;
-//}
-
+/**
+ * @brief 雷达响应数据处理
+ * 
+ * @param lidar 
+ * @param header 
+ * @param timeout 
+ * @return rt_err_t 
+ */
 static rt_err_t nv7_lidar_wait_resp_header(rt_device_t lidar, rt_uint8_t * header, rt_uint32_t timeout)
 {
     RT_ASSERT(lidar != RT_NULL);
@@ -127,7 +120,7 @@ static rt_err_t nv7_lidar_wait_resp_header(rt_device_t lidar, rt_uint8_t * heade
 /**
  * 单次测量
  * @param lidar
- * @param result_t 测量距离结果
+ * @param result_t 测量距离结果 单位(cm)
  * @param timeout
  * @return RT_EOK 获得结果
  */
@@ -157,7 +150,13 @@ rt_err_t nv7_lidar_get_single_measure(rt_device_t lidar, rt_uint16_t* result_t, 
         }
     }
 }
-
+/**
+ * @brief 开启连续测量
+ * 
+ * @param lidar 
+ * @param timeout 
+ * @return rt_err_t 
+ */
 rt_err_t nv7_lidar_open_continue_measure(rt_device_t lidar, rt_uint32_t timeout)
 {
     RT_ASSERT(lidar != RT_NULL);
@@ -182,7 +181,13 @@ rt_err_t nv7_lidar_open_continue_measure(rt_device_t lidar, rt_uint32_t timeout)
         }
     }
 }
-
+/**
+ * @brief 关闭连续测量
+ * 
+ * @param lidar 
+ * @param timeout 
+ * @return rt_err_t 
+ */
 rt_err_t nv7_lidar_close_continue_measure(rt_device_t lidar, rt_uint32_t timeout)
 {
     RT_ASSERT(lidar != RT_NULL);
@@ -207,7 +212,14 @@ rt_err_t nv7_lidar_close_continue_measure(rt_device_t lidar, rt_uint32_t timeout
         }
     }
 }
-
+/**
+ * @brief 连续测量模式下读取数据
+ * 
+ * @param lidar 
+ * @param result_t 
+ * @param timeout 
+ * @return rt_err_t 
+ */
 rt_err_t nv7_lidar_continue_measure_get(rt_device_t lidar, rt_uint16_t* result_t, rt_uint32_t timeout)
 {
     RT_ASSERT(lidar != RT_NULL);
@@ -232,7 +244,13 @@ rt_err_t nv7_lidar_continue_measure_get(rt_device_t lidar, rt_uint16_t* result_t
         }
     }
 }
-
+/**
+ * @brief 打开指示激光
+ * 
+ * @param lidar 
+ * @param timeout 
+ * @return rt_err_t 
+ */
 rt_err_t nv7_lidar_open_indicate_laser(rt_device_t lidar, rt_uint32_t timeout)
 {
     RT_ASSERT(lidar != RT_NULL);
@@ -257,7 +275,13 @@ rt_err_t nv7_lidar_open_indicate_laser(rt_device_t lidar, rt_uint32_t timeout)
         }
     }
 }
-
+/**
+ * @brief 关闭指示激光
+ * 
+ * @param lidar 
+ * @param timeout 
+ * @return rt_err_t 
+ */
 rt_err_t nv7_lidar_close_indicate_laser(rt_device_t lidar, rt_uint32_t timeout)
 {
     RT_ASSERT(lidar != RT_NULL);
