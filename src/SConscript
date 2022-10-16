@@ -1,0 +1,9 @@
+from building import *
+
+cwd     = GetCurrentDir()
+src     = Glob('*.c')
+CPPPATH = [cwd + '/../inc']
+
+group = DefineGroup('Nv7lidar', src, depend = ['PKG_USING_LRF_NV7LIDAR'], CPPPATH = CPPPATH)
+
+Return('group')
